@@ -10,7 +10,7 @@ const TodoItem = () => {
     return (
         <Card sx={{ minWidth: 275, m: 2, bgcolor: 'primary.main', borderRadius: 4 }}>
             <Box sx={{ display: 'flex' }} >
-                <Checkbox component='span' {...label} />
+                <Checkbox color='secondary' component='span' {...label} />
                 <CardContent>
                     <Typography variant='h5' sx={{ color: 'primary.contrastText' }} >
                         Get Grocery
