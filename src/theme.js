@@ -1,19 +1,53 @@
-import { createTheme } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
-
-// Create a theme instance.
-const theme = createTheme({
+export const lightTheme = {
   palette: {
+    mode: 'light',
     primary: {
-      main: '#556cd6',
+      main: '#60569e',
+      light: '#7f77b1',
+      dark: '#433c6e',
+      contrastText: 'white'
     },
     secondary: {
-      main: '#19857b',
-    },
-    error: {
-      main: red.A400,
+      main: '#b876f9',
+      light: '#c691fa',
+      dark: '#8052ae',
+      contrastText: 'white'
+    }
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: '#433c6e',
+        },
+      },
     },
   },
-});
+}
 
-export default theme;
+export const darkTheme = {
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#090426',
+      light: '#3a3651',
+      dark: '#06021a',
+      contrastText: 'white'
+    },
+    secondary: {
+      main: '#b876f9',
+      light: '#c691fa',
+      dark: '#8052ae',
+      contrastText: 'white'
+    }
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: '#06021a',
+        },
+      },
+    },
+  },
+}
