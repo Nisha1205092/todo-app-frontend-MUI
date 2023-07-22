@@ -1,4 +1,16 @@
 export const lightTheme = {
+  components: {
+    // Name of the component
+    MuiTextField: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          // Some CSS
+          color: 'white',
+        },
+      },
+    },
+  },
   palette: {
     mode: 'light',
     primary: {

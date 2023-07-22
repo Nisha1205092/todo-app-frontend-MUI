@@ -4,12 +4,11 @@ import Typography from '@mui/material/Typography';
 import Copyright from './Copyright';
 import TodoItem from './components/todo-item/todo-item';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import IconButton from '@mui/material/IconButton';
 import { Stack } from '@mui/material';
 import { darkTheme, lightTheme } from './theme';
 import { useState } from 'react';
 import Switch from '@mui/material/Switch';
+import FormDialog from './components/todo-form-dialog/todo-form-dialog';
 
 export default function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -55,17 +54,7 @@ export default function App() {
           </Stack>
           <TodoItem />
           <TodoItem />
-          <IconButton
-            sx={
-              {
-                color: "#B66FFD",
-
-              }
-            }
-            aria-label='add'
-          >
-            <AddCircleIcon sx={{ fontSize: 60 }} />
-          </IconButton>
+          <FormDialog />
           <Copyright />
         </Stack>
       </Container>
