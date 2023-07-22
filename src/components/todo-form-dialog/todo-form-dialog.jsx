@@ -85,6 +85,13 @@ const FormDialog = () => {
                     />
                     <br />
                     <br />
+                    {
+                        /*
+                        * customizing TextField colors 
+                        * https://smartdevpreneur.com/how-to-set-mui-textfield-text-alignment-text-color-and-label-color/#MUI_TextField_Label_Color
+                        * https://smartdevpreneur.com/override-textfield-border-color-in-material-ui/#Resources_and_Related_Links 
+                        */
+                    }
                     <TextField
                         sx={{
                             "& .MuiInputBase-root": {
