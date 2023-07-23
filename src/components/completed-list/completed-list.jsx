@@ -37,7 +37,7 @@ const CompletedList2 = () => {
                     <div
                         style={{
                             maxHeight: "600px",
-                            overflow: "scroll"
+                            overflowY: "auto"
                         }}
                     >
                         <TodoItem />
