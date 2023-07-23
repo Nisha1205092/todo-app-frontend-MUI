@@ -24,7 +24,12 @@ export default function App() {
         createTheme(darkTheme)
         : createTheme(lightTheme)}
     >
-      <Container sx={{ maxWidth: 'md', p: 0 }}>
+      <Container
+        sx={{
+          maxWidth: 'md',
+          p: 0,
+        }}
+      >
         <Stack
           bgcolor="primary.dark"
           direction="column"
@@ -53,8 +58,12 @@ export default function App() {
               />
             </Stack>
           </Stack>
-          <TodoItem />
-          <TodoItem />
+          <div>
+            <TodoItem />
+            <TodoItem />
+            <TodoItem />
+            <TodoItem />
+          </div>
           <CompletedList />
           <FormDialog />
           <Copyright />

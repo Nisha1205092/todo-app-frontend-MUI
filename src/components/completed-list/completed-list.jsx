@@ -10,12 +10,12 @@ const CompletedList2 = () => {
         <>
             <div style={{
                 width: "100%",
-                padding: "30px 16px 0 16px",
-                minHeight: "200px"
+                minHeight: "200px",
+                marginTop: "30px"
             }}
             >
                 <div style={{
-                    padding: "0px",
+                    padding: "0px 16px",
                     color: "white"
                 }}>
                     <Button
@@ -38,7 +38,8 @@ const CompletedList2 = () => {
                     <div
                         style={{
                             maxHeight: "600px",
-                            overflowY: "auto"
+                            overflowY: "auto",
+                            marginTop: "15px",
                         }}
                     >
                         <TodoItem />
