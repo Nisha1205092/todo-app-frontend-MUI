@@ -22,6 +22,7 @@ const CompletedList2 = () => {
                         sx={{
                             color: 'white',
                             width: '100%',
+                            borderRadius: '0px',
                             borderBottom: "1px solid white",
                             justifyContent: 'space-between'
                         }}
