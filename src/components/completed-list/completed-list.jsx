@@ -34,7 +34,12 @@ const CompletedList2 = () => {
                 </div>
                 {
                     isOpen &&
-                    <div>
+                    <div
+                        style={{
+                            maxHeight: "600px",
+                            overflow: "scroll"
+                        }}
+                    >
                         <TodoItem />
                         <TodoItem />
                         <TodoItem />
