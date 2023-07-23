@@ -8,14 +8,38 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const TodoItem = () => {
     return (
-        <Card sx={{ minWidth: 275, m: 2, bgcolor: 'primary.main', borderRadius: 4 }}>
-            <Box sx={{ display: 'flex' }} >
-                <Checkbox color='secondary' component='span' {...label} />
+        <Card
+            sx={{
+                minWidth: "90%",
+                m: 2,
+                bgcolor: 'primary.main',
+                borderRadius: 4
+            }}
+        >
+            <Box
+                sx={{
+                    display: 'flex'
+                }}
+            >
+                <Checkbox
+                    color='secondary'
+                    component='span' {...label}
+                />
                 <CardContent>
-                    <Typography variant='h5' sx={{ color: 'primary.contrastText' }} >
+                    <Typography
+                        variant='h5'
+                        sx={{
+                            color: 'primary.contrastText'
+                        }}
+                    >
                         Get Grocery
                     </Typography>
-                    <Typography variant='p' sx={{ color: 'primary.contrastText' }} >
+                    <Typography
+                        variant='p'
+                        sx={{
+                            color: 'primary.contrastText'
+                        }}
+                    >
                         Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                         Officiis nulla natus est porro fuga nesciunt incidunt quae eveniet,
                         laudantium adipisci! Reiciendis, laboriosam unde?

@@ -9,6 +9,7 @@ import { darkTheme, lightTheme } from './theme';
 import { useState } from 'react';
 import Switch from '@mui/material/Switch';
 import FormDialog from './components/todo-form-dialog/todo-form-dialog';
+import CompletedList from './components/completed-list/completed-list';
 
 export default function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -23,7 +24,7 @@ export default function App() {
         createTheme(darkTheme)
         : createTheme(lightTheme)}
     >
-      <Container sx={{ maxWidth: 'lg', p: 0 }}>
+      <Container sx={{ maxWidth: 'md', p: 0 }}>
         <Stack
           bgcolor="primary.dark"
           direction="column"
@@ -54,6 +55,7 @@ export default function App() {
           </Stack>
           <TodoItem />
           <TodoItem />
+          <CompletedList />
           <FormDialog />
           <Copyright />
         </Stack>

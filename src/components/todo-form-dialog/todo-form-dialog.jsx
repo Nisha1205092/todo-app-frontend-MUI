@@ -46,6 +46,8 @@ const FormDialog = () => {
                 PaperProps={{
                     style: {
                         backgroundColor: "#433c6e",
+                        width: "30%",
+                        minWidth: "300px"
                     },
                 }}
                 open={open}
