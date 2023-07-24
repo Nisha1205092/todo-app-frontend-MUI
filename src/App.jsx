@@ -48,7 +48,7 @@ export default function App() {
               borderBottom="3px solid white"
             >
               <Typography sx={{ color: 'primary.contrastText' }} variant="h4" component="h1" gutterBottom>
-                My Todo App
+                My Todo List
               </Typography>
 
               <Switch
