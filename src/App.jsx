@@ -2,7 +2,6 @@ import * as React from 'react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Copyright from './Copyright';
-import TodoItem from './components/todo-item/todo-item';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Stack } from '@mui/material';
 import { darkTheme, lightTheme } from './theme';
@@ -10,8 +9,9 @@ import { useState } from 'react';
 import Switch from '@mui/material/Switch';
 import FormDialog from './components/todo-form-dialog/todo-form-dialog';
 import CompletedList from './components/completed-list/completed-list';
+import TodoList from './components/todo-list/todo-list';
 
-export default function App() {
+const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
 
   const changeTheme = () => {
@@ -58,12 +58,7 @@ export default function App() {
               />
             </Stack>
           </Stack>
-          <div>
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-          </div>
+          <TodoList />
           <CompletedList />
           <FormDialog />
           <Copyright />
@@ -72,3 +67,5 @@ export default function App() {
     </ThemeProvider>
   );
 }
+
+export default App;

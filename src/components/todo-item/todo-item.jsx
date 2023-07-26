@@ -2,11 +2,14 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Checkbox from '@mui/material/Checkbox';
+import MyCheckbox from '../custom-checkbox/custom-checkbox';
 
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+const replaceItemAtIndex = (arr, index, newValue) => {
+    return [...arr.slice(0, index), newValue, ...arr.slice(index + 1)];
+};
 
-const TodoItem = () => {
+const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
+
     return (
         <Card
             sx={{
@@ -21,10 +24,7 @@ const TodoItem = () => {
                     display: 'flex'
                 }}
             >
-                <Checkbox
-                    color='secondary'
-                    component='span' {...label}
-                />
+                <MyCheckbox status={todoCompleted} todoId={todoId} />
                 <CardContent>
                     <Typography
                         variant='h5'
@@ -32,7 +32,7 @@ const TodoItem = () => {
                             color: 'primary.contrastText'
                         }}
                     >
-                        Get Grocery
+                        {todoTitle}
                     </Typography>
                     <Typography
                         variant='p'
@@ -40,13 +40,9 @@ const TodoItem = () => {
                             color: 'primary.contrastText'
                         }}
                     >
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                        Officiis nulla natus est porro fuga nesciunt incidunt quae eveniet,
-                        laudantium adipisci! Reiciendis, laboriosam unde?
-                        Illo facere, ipsum totam libero odit rerum.
+                        {todoDescription}
                     </Typography>
                 </CardContent>
-
             </Box>
         </Card>
     )

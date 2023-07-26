@@ -28,7 +28,7 @@ const CompletedList2 = () => {
                         }}
                         endIcon={<KeyboardArrowDownIcon />}
                         onClick={() => setIsOpen(!isOpen)}
-                        disableRipple="true"
+                        disableRipple
                     >
                         Completed List
                     </Button>
