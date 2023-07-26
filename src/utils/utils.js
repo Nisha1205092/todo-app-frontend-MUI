@@ -18,7 +18,7 @@ export const fetchAllTodos = async () => {
 
 /**
  * handled the server not available case
-*/
+
 export const updateCheckbox = (todoId, checkedStatus) => {
     const [todoList, setTodoList] = useRecoilState(todoListState)
     const updatedTodos = [...todoList]; // Create a copy of the todosArray
@@ -51,6 +51,7 @@ export const updateCheckbox = (todoId, checkedStatus) => {
             })
     }
 }
+*/
 
 /** 
 * handled the server not available case
@@ -75,7 +76,7 @@ export const removeTodoItem = (todoId) => {
 
 /**
  * handled the server not available case
-*/
+
 export const addTodoItem = ({ title, completed, description }) => {
     const [todoList, setTodoList] = useRecoilState(todoListState)
     let todoId;
@@ -105,10 +106,11 @@ export const addTodoItem = ({ title, completed, description }) => {
             alert('Something went wrong!')
         })
 }
+*/
 
 /**
  * handled the server not available case
-*/
+
 const updateTodoItem = (todoId, title, description) => {
     const [todoList, setTodoList] = useRecoilState(todoListState)
     // save in DB
@@ -136,3 +138,4 @@ const updateTodoItem = (todoId, title, description) => {
             alert('Something went wrong! Please refresh!')
         })
 }
+*/

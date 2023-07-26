@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { updateCheckbox } from "../../utils/utils"
 import Checkbox from '@mui/material/Checkbox';
 import { useRecoilState } from "recoil";
 import { todoListState } from "../../state/todos.recoil";

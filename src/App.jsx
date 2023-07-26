@@ -7,7 +7,7 @@ import { Stack } from '@mui/material';
 import { darkTheme, lightTheme } from './theme';
 import { useState } from 'react';
 import Switch from '@mui/material/Switch';
-import FormDialog from './components/todo-form-dialog/todo-form-dialog';
+import AddTodoDialog from './components/add-todo-item/add-todo-item';
 import CompletedList from './components/completed-list/completed-list';
 import TodoList from './components/todo-list/todo-list';
 
@@ -60,7 +60,7 @@ const App = () => {
           </Stack>
           <TodoList />
           <CompletedList />
-          <FormDialog />
+          <AddTodoDialog />
           <Copyright />
         </Stack>
       </Container>
