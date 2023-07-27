@@ -2,9 +2,13 @@ import Button from '@mui/material/Button';
 import { useState } from "react"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import TodoItem from '../todo-item/todo-item';
+import { useRecoilValue } from 'recoil';
+import { filteredTodoListState } from '../../state/todos.recoil';
+import { randomKeyGenerator } from '../../utils/utils';
 
 const CompletedList2 = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const filteredLists = useRecoilValue(filteredTodoListState)
 
     return (
         <>
@@ -30,7 +34,7 @@ const CompletedList2 = () => {
                         onClick={() => setIsOpen(!isOpen)}
                         disableRipple
                     >
-                        Completed List
+                        {`Completed List (${filteredLists.completedCount})`}
                     </Button>
                 </div>
                 {
@@ -42,10 +46,19 @@ const CompletedList2 = () => {
                             marginTop: "15px",
                         }}
                     >
-                        <TodoItem />
-                        <TodoItem />
-                        <TodoItem />
-                        <TodoItem />
+                        {
+                            filteredLists.todoListCompleted.length === 0
+                                ? 'loading'
+                                : filteredLists.todoListCompleted.map(item => (
+                                    <TodoItem
+                                        key={randomKeyGenerator()}
+                                        todoId={item._id}
+                                        todoTitle={item.title}
+                                        todoDescription={item.description}
+                                        todoCompleted={item.completed}
+                                    />
+                                ))
+                        }
                     </div>
                 }
             </div>

@@ -1,9 +1,6 @@
 import {
-    RecoilRoot,
     atom,
     selector,
-    useRecoilState,
-    useRecoilValue,
 } from 'recoil';
 
 const todoListState = atom({
@@ -11,6 +8,25 @@ const todoListState = atom({
     default: []
 })
 
+const filteredTodoListState = selector({
+    key: 'filteredTodoListState',
+    get: ({ get }) => {
+        const list = get(todoListState)
+        const todoListCompleted = list.filter(item => item.completed)
+        const todoListNotCompleted = list.filter(item => !item.completed)
+        const totalTodos = list.length
+        const completedCount = todoListCompleted.length
+
+        return {
+            todoListCompleted,
+            todoListNotCompleted,
+            totalTodos,
+            completedCount
+        }
+    }
+})
+
 export {
-    todoListState
+    todoListState,
+    filteredTodoListState
 }

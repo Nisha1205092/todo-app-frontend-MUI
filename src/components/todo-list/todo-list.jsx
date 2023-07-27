@@ -1,15 +1,18 @@
 import { randomKeyGenerator } from "../../utils/utils"
 import TodoItem from "../todo-item/todo-item"
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { fetchAllTodos } from '../../utils/utils.js';
-import { todoListState } from '../../state/todos.recoil';
+import { filteredTodoListState, todoListState } from '../../state/todos.recoil';
 import { useEffect } from "react";
 
 const TodoList = () => {
     const [todoList, setTodoList] = useRecoilState(todoListState)
+    const filteredLists = useRecoilValue(filteredTodoListState)
 
+    console.log('not completed list: ', filteredLists)
     console.log('todoList rerendered')
     console.log({ todoList })
+
     useEffect(() => {
         const initializer = async () => {
             try {
@@ -25,9 +28,12 @@ const TodoList = () => {
     }, [])
 
     return (
-        <div>
+        <div style={{
+            width: "100%"
+        }}
+        >
             {
-                todoList.length === 0 ? 'loading' : todoList.map(item => (
+                filteredLists.todoListNotCompleted.length === 0 ? 'loading' : filteredLists.todoListNotCompleted.map(item => (
                     <TodoItem
                         key={randomKeyGenerator()}
                         todoId={item._id}
