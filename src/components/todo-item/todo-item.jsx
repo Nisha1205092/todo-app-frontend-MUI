@@ -9,12 +9,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import UpdateDialog from '../update-todo-item/update-todo-item';
+import Snackbar from '@mui/material/Snackbar';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { todoListState } from '../../state/todos.recoil';
 
 const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
     const [open, setOpen] = useState(false);
+    const [copy, setCopy] = useState(false);
     const [todoList, setTodoList] = useRecoilState(todoListState)
 
     const handleClickOpen = () => {
@@ -77,11 +79,23 @@ const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
             </Box>
             <Box>
                 <CardActions disableSpacing>
+
                     <IconButton
+                        onClick={() => {
+                            setCopy(true);
+                            navigator.clipboard.writeText(`${todoTitle} ${todoDescription}`)
+                        }}
                         aria-label='copy to clipboard'
                     >
                         <ContentPasteIcon />
                     </IconButton>
+                    <Snackbar
+                        open={copy}
+                        onClose={() => setCopy(false)}
+                        autoHideDuration={2000}
+                        message="Copied to clipboard"
+                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                    />
                     <IconButton
                         onClick={() => {
                             console.log('edit');
