@@ -10,6 +10,7 @@ import Switch from '@mui/material/Switch';
 import AddTodoDialog from './components/add-todo-item/add-todo-item';
 import CompletedList from './components/completed-list/completed-list';
 import TodoList from './components/todo-list/todo-list';
+import { ConfirmProvider } from 'material-ui-confirm';
 
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -24,47 +25,49 @@ const App = () => {
         createTheme(darkTheme)
         : createTheme(lightTheme)}
     >
-      <Container
-        sx={{
-          maxWidth: 'md',
-          p: 0,
-        }}
-      >
-        <Stack
-          bgcolor="primary.dark"
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          paddingTop={5}
-          borderRadius={3}
+      <ConfirmProvider>
+        <Container
+          sx={{
+            maxWidth: 'md',
+            p: 0,
+          }}
         >
           <Stack
-            padding={2}
-            width='100%'
+            bgcolor="primary.dark"
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            paddingTop={5}
+            borderRadius={3}
           >
             <Stack
-              direction="row"
-              justifyContent="space-between"
-              borderBottom="3px solid white"
+              padding={2}
+              width='100%'
             >
-              <Typography sx={{ color: 'primary.contrastText' }} variant="h4" component="h1" gutterBottom>
-                My Todo List
-              </Typography>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                borderBottom="3px solid white"
+              >
+                <Typography sx={{ color: 'primary.contrastText' }} variant="h4" component="h1" gutterBottom>
+                  My Todo List
+                </Typography>
 
-              <Switch
-                onChange={changeTheme}
-                checked={isDarkTheme}
-                color="default"
-              />
+                <Switch
+                  onChange={changeTheme}
+                  checked={isDarkTheme}
+                  color="default"
+                />
+              </Stack>
             </Stack>
+            <TodoList />
+            <CompletedList />
+            <AddTodoDialog />
+            <Copyright />
           </Stack>
-          <TodoList />
-          <CompletedList />
-          <AddTodoDialog />
-          <Copyright />
-        </Stack>
-      </Container>
-    </ThemeProvider>
+        </Container>
+      </ConfirmProvider>
+    </ThemeProvider >
   );
 }
 

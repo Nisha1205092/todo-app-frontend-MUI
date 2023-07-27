@@ -13,8 +13,10 @@ import Snackbar from '@mui/material/Snackbar';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { todoListState } from '../../state/todos.recoil';
+import { useConfirm } from "material-ui-confirm";
 
 const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
+    const confirm = useConfirm();
     const [open, setOpen] = useState(false);
     const [copy, setCopy] = useState(false);
     const [todoList, setTodoList] = useRecoilState(todoListState)
@@ -26,6 +28,12 @@ const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleDelete = () => {
+        confirm({ description: 'This will permanently delete the item' })
+            .then(() => { removeTodoItem() })
+            .catch(() => console.log('Deletion cancelled'))
+    }
 
     const removeTodoItem = () => {
         fetch(`${import.meta.env.VITE_SERVER_URL}/todos/${todoId}`, {
@@ -107,7 +115,7 @@ const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
                     </IconButton>
                     <IconButton
                         onClick={() => {
-                            removeTodoItem()
+                            handleDelete()
                         }}
                         aria-label="delete todo item"
                     >

@@ -10,6 +10,13 @@ export const lightTheme = {
         },
       },
     },
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: '#433c6e',
+        },
+      },
+    },
   },
   palette: {
     mode: 'light',
@@ -25,15 +32,6 @@ export const lightTheme = {
       dark: '#8052ae',
       contrastText: 'white'
     }
-  },
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          backgroundColor: '#433c6e',
-        },
-      },
-    },
   },
 }
 

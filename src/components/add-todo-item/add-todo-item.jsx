@@ -50,12 +50,16 @@ const AddTodoDialog = () => {
 
     const handleCancel = () => {
         setOpen(false);
+        setTitle('')
+        setDescription('')
         console.log('cancelled')
     }
 
     const handleAdd = () => {
         setOpen(false);
         addTodoItem({ title, completed: false, description })
+        setTitle('')
+        setDescription('')
         console.log('added')
     }
 
