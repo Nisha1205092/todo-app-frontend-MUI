@@ -45,8 +45,6 @@ const CompletedList2 = () => {
                     isOpen &&
                     <div
                         style={{
-                            maxHeight: "600px",
-                            overflowY: "auto",
                             marginTop: "15px",
                         }}
                     >
