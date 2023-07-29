@@ -4,16 +4,22 @@ import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { todoListState } from '../../state/todos.recoil';
 import MyDialogBox from '../custom-dialogbox/custom-dialogbox';
+import Snackbar from '@mui/material/Snackbar';
 
 const AddTodoDialog = () => {
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('')
     const [todoList, setTodoList] = useRecoilState(todoListState)
+    // for showing Snackbar when attempting empty item addition
+    const [warning, setWarning] = useState(false);
 
     const addTodoItem = ({ title, completed, description }) => {
         let todoId;
-
+        if (title === '' && description === '') {
+            setWarning(true);
+            return;
+        }
         fetch(`${import.meta.env.VITE_SERVER_URL}/todos`, {
             method: "POST",
             body: JSON.stringify({
@@ -77,6 +83,13 @@ const AddTodoDialog = () => {
                 <AddCircleIcon sx={{ fontSize: 60 }} />
             </IconButton>
 
+            <Snackbar
+                open={warning}
+                onClose={() => setWarning(false)}
+                autoHideDuration={2000}
+                message="Empty todo item not allowed!!"
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            />
             <MyDialogBox
                 dialogTitle={'Create a Todo'}
                 title={title}
