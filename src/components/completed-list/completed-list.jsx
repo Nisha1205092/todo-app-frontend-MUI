@@ -48,7 +48,12 @@ const CompletedList2 = () => {
                     >
                         {
                             filteredLists.todoListCompleted.length === 0
-                                ? 'loading'
+                                ? <div style={{
+                                    color: 'white',
+                                    textAlign: 'center'
+                                }}>
+                                    No completed task at this moment!!
+                                </div>
                                 : filteredLists.todoListCompleted.map(item => (
                                     <TodoItem
                                         key={randomKeyGenerator()}
