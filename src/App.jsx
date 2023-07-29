@@ -44,7 +44,7 @@ const App = () => {
       <ConfirmProvider>
         <Container
           sx={{
-            display: 'flex',
+            display: 'grid',
             flexDirection: 'column',
             minHeight: '100vh',
             maxWidth: 'md',
@@ -53,11 +53,14 @@ const App = () => {
         >
           <Stack
             bgcolor="primary.dark"
-            direction="column"
+            display="grid"
+            gridTemplateColumns="1fr"
+            gridTemplateRows="min-content auto 1fr min-content min-content 10px"
+            justifyItems="center"
             justifyContent="flex-start"
             height='100%'
             overflow="auto"
-            alignItems="center"
+            alignItems="start"
             paddingTop={5}
           >
             <Stack
