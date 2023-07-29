@@ -53,7 +53,6 @@ const App = () => {
             justifyContent="center"
             alignItems="center"
             paddingTop={5}
-            borderRadius={3}
           >
             <Stack
               padding={2}
