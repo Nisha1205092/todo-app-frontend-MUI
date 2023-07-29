@@ -1,3 +1,4 @@
+import CircularProgress from '@mui/material/CircularProgress';
 import { randomKeyGenerator } from "../../utils/utils"
 import TodoItem from "../todo-item/todo-item"
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -42,7 +43,7 @@ const TodoList = () => {
                             color: 'white',
                             textAlign: 'center'
                         }}>
-                        Loading
+                        <CircularProgress color="secondary" />
                     </div>
                     : (
                         filteredLists.todoListNotCompleted.length === 0
