@@ -5,7 +5,7 @@ import Copyright from './Copyright';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Stack } from '@mui/material';
 import { darkTheme, lightTheme } from './theme';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Switch from '@mui/material/Switch';
 import AddTodoDialog from './components/add-todo-item/add-todo-item';
 import CompletedList from './components/completed-list/completed-list';
@@ -13,12 +13,27 @@ import TodoList from './components/todo-list/todo-list';
 import { ConfirmProvider } from 'material-ui-confirm';
 
 const App = () => {
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [theme, setTheme] = useState('light');
+  const isDarkTheme = theme === 'dark';
 
   const changeTheme = () => {
-    setIsDarkTheme(!isDarkTheme)
-    console.log({ isDarkTheme })
+    const updatedTheme = isDarkTheme ? 'light' : 'dark';
+    setTheme(updatedTheme);
+    localStorage.setItem('theme', updatedTheme)
+    console.log({ updatedTheme })
   }
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('prefers-color-scheme: dark').matches;
+    console.log('prefers dark: ', prefersDark)
+    if (savedTheme && ['dark', 'light'].includes(savedTheme)) {
+      setTheme(savedTheme)
+    } else if (prefersDark) {
+      setTheme('dark')
+    }
+  }, [])
+
   return (
     <ThemeProvider
       theme={isDarkTheme ?
