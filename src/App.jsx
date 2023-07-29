@@ -11,6 +11,7 @@ import AddTodoDialog from './components/add-todo-item/add-todo-item';
 import CompletedList from './components/completed-list/completed-list';
 import TodoList from './components/todo-list/todo-list';
 import { ConfirmProvider } from 'material-ui-confirm';
+import SimpleThemeToggler from './components/theme-toggler/simple-theme-toggler';
 
 const App = () => {
   const [theme, setTheme] = useState('light');
@@ -67,10 +68,14 @@ const App = () => {
                   My Todo List
                 </Typography>
 
-                <Switch
+                {/* <Switch
                   onChange={changeTheme}
                   checked={isDarkTheme}
                   color="default"
+                /> */}
+                <SimpleThemeToggler
+                  themeToggler={changeTheme}
+                  isDarkTheme={isDarkTheme}
                 />
               </Stack>
             </Stack>

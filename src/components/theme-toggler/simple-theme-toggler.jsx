@@ -1,8 +1,9 @@
-import Switch from '@mui/material/Switch';
+import MaterialUISwitch from './theme-toggler';
 
 const SimpleThemeToggler = ({ themeToggler, isDarkTheme }) => {
     return (
-        <Switch onChange={themeToggler} checked={isDarkTheme} />
+        // <ThemeToggler onChange={themeToggler} checked={isDarkTheme} />
+        <MaterialUISwitch sx={{ m: 1 }} onChange={themeToggler} checked={isDarkTheme} />
     )
 }
 

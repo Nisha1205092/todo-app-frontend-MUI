@@ -37,7 +37,13 @@ const TodoList = () => {
         >
             {
                 isLoading
-                    ? 'loading'
+                    ? <div
+                        style={{
+                            color: 'white',
+                            textAlign: 'center'
+                        }}>
+                        Loading
+                    </div>
                     : (
                         filteredLists.todoListNotCompleted.length === 0
                             ? <div

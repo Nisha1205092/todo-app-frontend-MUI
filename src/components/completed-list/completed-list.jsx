@@ -1,6 +1,7 @@
 import Button from '@mui/material/Button';
 import { useState } from "react"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import TodoItem from '../todo-item/todo-item';
 import { useRecoilValue } from 'recoil';
 import { filteredTodoListState } from '../../state/todos.recoil';
@@ -10,6 +11,9 @@ const CompletedList2 = () => {
     const [isOpen, setIsOpen] = useState(false);
     const filteredLists = useRecoilValue(filteredTodoListState)
 
+    const handleClick = () => {
+        setIsOpen(!isOpen)
+    }
     return (
         <>
             <div style={{
@@ -30,8 +34,8 @@ const CompletedList2 = () => {
                             borderBottom: "1px solid white",
                             justifyContent: 'space-between'
                         }}
-                        endIcon={<KeyboardArrowDownIcon />}
-                        onClick={() => setIsOpen(!isOpen)}
+                        endIcon={isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                        onClick={handleClick}
                         disableRipple
                     >
                         {`Completed List (${filteredLists.completedCount})`}
