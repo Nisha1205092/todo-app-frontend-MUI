@@ -17,6 +17,7 @@ export const lightTheme = {
         },
       },
     },
+
   },
   palette: {
     mode: 'light',
@@ -59,5 +60,12 @@ export const darkTheme = {
         },
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          color: '#c1b7ff'
+        }
+      }
+    }
   },
 }
