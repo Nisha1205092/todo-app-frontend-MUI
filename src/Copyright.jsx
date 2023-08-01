@@ -3,11 +3,14 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 
 export default function Copyright() {
+  console.log('inside copyright')
   return (
     <Typography
       variant="body2"
       color="primary.contrastText"
+      bgcolor="primary.dark"
       align="center"
+      paddingBottom="10px"
     >
       {'Copyright © '}
       <Link

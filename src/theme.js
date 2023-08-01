@@ -17,10 +17,23 @@ export const lightTheme = {
         },
       },
     },
-
+    MuiButtonBase: {
+      variants: [
+        {
+          props: { variant: 'action' },
+          style: {
+            backgroundColor: '#2b2645',
+            color: 'white'
+          }
+        }
+      ]
+    }
   },
   palette: {
     mode: 'light',
+    background: {
+      default: '#7f77b1'
+    },
     primary: {
       main: '#60569e',
       light: '#7f77b1',
@@ -28,9 +41,9 @@ export const lightTheme = {
       contrastText: 'white'
     },
     secondary: {
-      main: '#b876f9',
-      light: '#c691fa',
-      dark: '#8052ae',
+      main: '#6A56EA',
+      light: '#A49AE6',
+      dark: '#2E2666',
       contrastText: 'white'
     }
   },
@@ -39,6 +52,9 @@ export const lightTheme = {
 export const darkTheme = {
   palette: {
     mode: 'dark',
+    background: {
+      default: '#3a3651'
+    },
     primary: {
       main: '#090426',
       light: '#3a3651',
@@ -46,9 +62,9 @@ export const darkTheme = {
       contrastText: 'white'
     },
     secondary: {
-      main: '#b876f9',
-      light: '#c691fa',
-      dark: '#8052ae',
+      main: '#3819E6',
+      light: '#332A66',
+      dark: '#7560EA',
       contrastText: 'white'
     }
   },
