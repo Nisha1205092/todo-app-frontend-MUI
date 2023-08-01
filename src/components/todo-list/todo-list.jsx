@@ -11,9 +11,9 @@ const TodoList = () => {
     const filteredLists = useRecoilValue(filteredTodoListState)
     const [isLoading, setIsLoading] = useState(true)
 
-    console.log('not completed list: ', filteredLists)
-    console.log('todoList rerendered')
-    console.log({ todoList })
+    // console.log('not completed list: ', filteredLists)
+    // console.log('todoList rerendered')
+    // console.log({ todoList })
 
     useEffect(() => {
         const initializer = async () => {
@@ -28,7 +28,7 @@ const TodoList = () => {
             }
         }
         initializer();
-        console.log({ todoList })
+        // console.log({ todoList })
     }, [])
 
     return (

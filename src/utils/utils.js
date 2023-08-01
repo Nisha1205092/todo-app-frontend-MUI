@@ -1,13 +1,26 @@
 import { useRecoilState } from "recoil";
 import { todoListState } from '../state/todos.recoil';
 
+export const saveUser = (user, setAuthUser) => {
+    if (user) {
+        const auth = {
+            email: user.email,
+            uid: user.uid
+        }
+        // save state locally as a recoil state
+        setAuthUser(auth)
+        const authString = JSON.stringify(auth)
+        localStorage.setItem('user', authString)
+    }
+}
+
 export const randomKeyGenerator = () => {
     const key = Math.floor(Math.random() * 1000000);
     return key;
 }
 
 export const fetchAllTodos = async () => {
-    console.log(import.meta.env.VITE_SERVER_URL)
+    // console.log(import.meta.env.VITE_SERVER_URL)
     const data = await fetch(`${import.meta.env.VITE_SERVER_URL}/todos`, {
         method: 'GET'
     })

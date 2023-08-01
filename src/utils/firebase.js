@@ -54,7 +54,7 @@ export const SignUpWithEmailAndPassword = async ({ email, password }) => {
 }
 
 export const SignInWithEmailAndPassword = async ({ email, password }) => {
-    console.log({ email, password })
+    // console.log({ email, password })
     if (!email || !password) {
         console.log('empty email/password');
         return;

@@ -7,9 +7,12 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { SignInWithEmailAndPassword } from "../../utils/firebase";
+import { useRecoilState } from "recoil";
+import { userState } from "../../state/authState.recoil";
+import { saveUser } from "../../utils/utils";
 
 const defaultFormFields = {
     email: '',
@@ -19,7 +22,16 @@ const defaultFormFields = {
 const Signin = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { email, password } = formFields;
-    console.log({ email, password })
+    // console.log({ email, password })
+    const [authUser, setAuthUser] = useRecoilState(userState);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        console.log(authUser);
+        if (authUser) {
+            navigate('/') //if user is already signed in, then it automatically takes to the home page
+        }
+    }, [authUser]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -34,12 +46,14 @@ const Signin = () => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        console.log({
-            email: data.get("email"),
-            password: data.get("password")
-        });
+        // console.log({
+        //     email: data.get("email"),
+        //     password: data.get("password")
+        // });
         const user = await SignInWithEmailAndPassword({ email, password })
-        console.log({ email: user.email, uid: user.uid })
+        // console.log({ email: user.email, uid: user.uid })
+        saveUser(user, setAuthUser);
+        // console.log(authUser)
         resetFormFields()
     };
 

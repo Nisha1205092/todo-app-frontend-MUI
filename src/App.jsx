@@ -36,10 +36,10 @@ const App = () => {
     >
       <CssBaseline />
       <>
-        <NavBar />
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/auth' element={<Auth />} />
+          <Route path='/' element={<NavBar />}>
+            <Route index element={<Home />} />
+          </Route>
           <Route path='/signup' element={<Signup />} />
           <Route path='/signin' element={<Signin />} />
         </Routes>
