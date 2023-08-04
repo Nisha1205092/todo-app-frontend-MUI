@@ -14,25 +14,36 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { signOutUser } from '../../utils/firebase';
 import { userState } from '../../state/authState.recoil';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const NavBar = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [theme, setTheme] = useRecoilState(themeState)
     const isDarkTheme = theme === 'dark';
     const navigate = useNavigate();
-    // Use useState to manage the user state
+    // initially get the login status from browser's local storage
     const userString = localStorage.getItem('user');
     const parsedUser = JSON.parse(userString);
-    const [user, setUser] = useState(parsedUser);
+    // const [user, setUser] = useState(parsedUser);
     const [authUser, setAuthUser] = useRecoilState(userState)
 
+    // for the first time navbar mounts, 
+    // set the user status according to the status
+    // saved in the local storage 
     useEffect(() => {
-        setUser(parsedUser); // Update the user state
-        console.log({ user })
+        setAuthUser(parsedUser)
+    }, [])
+
+    useEffect(() => {
+        // setAuthUser(parsedUser); // Update the user state
+        console.log({ authUser })
         setIsLoading(false);
-        if (user === null) {
-            setAuthUser(null)
+        if (authUser === null) {
+            // setAuthUser(null)
             navigate('/signin')
+        } else {
+            // setAuthUser(user)
+            navigate('/')
         }
     }, [authUser])
 
@@ -44,11 +55,7 @@ const NavBar = () => {
     }
 
     return (
-        <div
-            style={{ width: "100vw", height: "100vh" }}
-        >
-
-
+        <>
             {
                 isLoading ?
                     <div
@@ -81,40 +88,37 @@ const NavBar = () => {
                                         <MenuIcon />
                                     </IconButton>
                                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                                        News
+                                        Welcome to Todo App!
                                     </Typography>
                                     <SimpleThemeToggler
                                         themeToggler={changeTheme}
                                         isDarkTheme={isDarkTheme}
                                     />
-                                    <Button
-                                        onClick={() => {
-                                            signOutUser()
-                                            navigate('/signin')
-                                            localStorage.setItem('user', null)
-                                        }}
-                                        sx={
-                                            {
-                                                color: "white",
-                                            }
-                                        }
-                                    >
-                                        <Link>
-                                            <Typography
-                                                sx={{
-                                                    color: 'white'
-                                                }}
-                                            >LogOut
-                                            </Typography>
-                                        </Link>
-                                    </Button>
+
+                                    {
+                                        authUser ?
+                                            (
+                                                <Link to='/signin'>
+                                                    <IconButton
+                                                        onClick={() => {
+                                                            signOutUser()
+                                                            localStorage.setItem('user', null)
+                                                            setAuthUser(null)
+                                                        }}
+                                                    >
+                                                        <LogoutIcon />
+                                                    </IconButton>
+                                                </Link>
+                                            )
+                                            : <span></span>
+                                    }
                                 </Toolbar>
                             </AppBar>
                         </Box>
                         <Outlet />
                     </>
             }
-        </div>
+        </>
     );
 }
 

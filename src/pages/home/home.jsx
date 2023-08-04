@@ -5,16 +5,30 @@ import AddTodoDialog from '../../components/add-todo-item/add-todo-item';
 import CompletedList from '../../components/completed-list/completed-list';
 import TodoList from '../../components/todo-list/todo-list';
 import { ConfirmProvider } from 'material-ui-confirm';
+import { useRecoilState } from 'recoil';
+import { userState } from '../../state/authState.recoil';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Home = () => {
+    const [authUser, setAuthUser] = useRecoilState(userState);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        console.log(authUser);
+        if (authUser) {
+            navigate('/') //if user is already signed in, then it automatically takes to the home page
+        } else {
+            navigate('/signin')
+        }
+    }, [authUser]);
 
     return (
         <ConfirmProvider>
             <Container
                 sx={{
-                    display: 'grid',
+                    display: 'flex',
                     flexDirection: 'column',
-                    minHeight: '100vh',
                     maxWidth: 'md',
                     p: 0,
                 }}
@@ -23,13 +37,12 @@ const Home = () => {
                     bgcolor="primary.dark"
                     display="grid"
                     gridTemplateColumns="1fr"
-                    gridTemplateRows="min-content auto 1fr min-content min-content 10px"
+                    gridTemplateRows="min-content auto 1fr min-content"
                     justifyItems="center"
                     justifyContent="flex-start"
                     height='100%'
                     overflow="auto"
                     alignItems="start"
-                    paddingTop={5}
                 >
                     <Stack
                         padding={2}

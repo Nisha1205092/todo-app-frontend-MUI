@@ -18,7 +18,6 @@ const CompletedList2 = () => {
         <>
             <div style={{
                 width: "100%",
-                minHeight: "200px",
                 marginTop: "30px"
             }}
             >

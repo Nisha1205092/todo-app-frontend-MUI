@@ -35,16 +35,22 @@ const App = () => {
         : createTheme(lightTheme)}
     >
       <CssBaseline />
-      <>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateRows: '8% 85% 7%',
+          height: '100vh'
+        }}
+      >
         <Routes>
           <Route path='/' element={<NavBar />}>
             <Route index element={<Home />} />
+            <Route path='signup' element={<Signup />} />
+            <Route path='signin' element={<Signin />} />
           </Route>
-          <Route path='/signup' element={<Signup />} />
-          <Route path='/signin' element={<Signin />} />
         </Routes>
         <Copyright />
-      </>
+      </div>
     </ThemeProvider >
   );
 }

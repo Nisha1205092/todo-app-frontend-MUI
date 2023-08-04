@@ -10,6 +10,7 @@ import { SignUpWithEmailAndPassword } from "../../utils/firebase";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/authState.recoil";
 import { saveUser } from "../../utils/utils";
+import { USER_SIGNUP } from "../../routes/routes";
 
 const defaultFormFields = {
     email: '',
@@ -26,6 +27,8 @@ const Signup = () => {
     useEffect(() => {
         console.log(authUser);
         if (authUser) {
+            const authString = JSON.stringify(authUser)
+            localStorage.setItem('user', authString)
             navigate('/')
         }
     }, [authUser]);
@@ -52,8 +55,35 @@ const Signup = () => {
             return;
         }
         const user = await SignUpWithEmailAndPassword({ email, password })
+        console.log(`after firebase returns: ${user.email}, ${user.uid}`)
+
+        // send data to backend
+        fetch(`${import.meta.env.VITE_SERVER_URL}${USER_SIGNUP}`, {
+            method: 'POST',
+            body: JSON.stringify({
+                email: user.email,
+                uid: user.uid
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then((res) => res.json())
+            .then(data => {
+                const auth = {
+                    email: user.email,
+                    uid: user.uid
+                }
+                navigate('/')
+                // save state locally as a recoil state
+                setAuthUser(auth)
+                console.log(data)
+            })
+            .catch(err => console.log('error in signup', err))
         // console.log({ email: user.email, uid: user.uid })
-        saveUser(user, setAuthUser);
+        // saveUser(user, setAuthUser);
+        // if (user) {
+        // }
         // console.log(authUser)
         resetFormFields()
     };

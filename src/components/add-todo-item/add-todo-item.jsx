@@ -1,16 +1,20 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { todoListState } from '../../state/todos.recoil';
 import MyDialogBox from '../custom-dialogbox/custom-dialogbox';
 import Snackbar from '@mui/material/Snackbar';
+import { TODO_ROUTE } from '../../routes/routes';
+import { userState } from '../../state/authState.recoil';
 
 const AddTodoDialog = () => {
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('')
     const [todoList, setTodoList] = useRecoilState(todoListState)
+    const { email } = useRecoilValue(userState)
+
     // for showing Snackbar when attempting empty item addition
     const [warning, setWarning] = useState(false);
 
@@ -20,15 +24,15 @@ const AddTodoDialog = () => {
             setWarning(true);
             return;
         }
-        fetch(`${import.meta.env.VITE_SERVER_URL}/todos`, {
+        fetch(`${import.meta.env.VITE_SERVER_URL}${TODO_ROUTE}`, {
             method: "POST",
             body: JSON.stringify({
                 title,
-                description,
-                completed: false
+                description
             }),
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'email': email
             }
         })
             .then(res => res.json())

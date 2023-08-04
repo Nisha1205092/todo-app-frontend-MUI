@@ -11,16 +11,18 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import UpdateDialog from '../update-todo-item/update-todo-item';
 import Snackbar from '@mui/material/Snackbar';
 import { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { todoListState } from '../../state/todos.recoil';
 import { useConfirm } from "material-ui-confirm";
+import { TODO_ROUTE } from '../../routes/routes';
+import { userState } from '../../state/authState.recoil';
 
 const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
     const confirm = useConfirm();
     const [open, setOpen] = useState(false);
     const [copy, setCopy] = useState(false);
     const [todoList, setTodoList] = useRecoilState(todoListState)
-
+    const { email } = useRecoilValue(userState)
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -36,8 +38,12 @@ const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
     }
 
     const removeTodoItem = () => {
-        fetch(`${import.meta.env.VITE_SERVER_URL}/todos/${todoId}`, {
-            method: 'DELETE'
+        fetch(`${import.meta.env.VITE_SERVER_URL}${TODO_ROUTE}/${todoId}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+                'email': email
+            }
         })
             .then(() => {
                 // console.log('delete successful')

@@ -13,6 +13,7 @@ import { SignInWithEmailAndPassword } from "../../utils/firebase";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/authState.recoil";
 import { saveUser } from "../../utils/utils";
+import { USER_SIGNIN } from "../../routes/routes";
 
 const defaultFormFields = {
     email: '',
@@ -53,6 +54,15 @@ const Signin = () => {
         const user = await SignInWithEmailAndPassword({ email, password })
         // console.log({ email: user.email, uid: user.uid })
         saveUser(user, setAuthUser);
+        // send data to backend
+        fetch(`${import.meta.env.VITE_SERVER_URL}${USER_SIGNIN}`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'email': email
+            }
+        })
+            .then(() => navigate('/'))
         // console.log(authUser)
         resetFormFields()
     };

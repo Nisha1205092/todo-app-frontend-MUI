@@ -5,12 +5,13 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { fetchAllTodos } from '../../utils/utils.js';
 import { filteredTodoListState, todoListState } from '../../state/todos.recoil';
 import { useEffect, useState } from "react";
+import { userState } from '../../state/authState.recoil';
 
 const TodoList = () => {
     const [todoList, setTodoList] = useRecoilState(todoListState)
     const filteredLists = useRecoilValue(filteredTodoListState)
     const [isLoading, setIsLoading] = useState(true)
-
+    const { email } = useRecoilValue(userState)
     // console.log('not completed list: ', filteredLists)
     // console.log('todoList rerendered')
     // console.log({ todoList })
@@ -18,7 +19,7 @@ const TodoList = () => {
     useEffect(() => {
         const initializer = async () => {
             try {
-                const todos = await fetchAllTodos()
+                const todos = await fetchAllTodos(email)
                 setTodoList(todos)
                 setIsLoading(false)
             } catch (err) {
