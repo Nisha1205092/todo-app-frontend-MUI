@@ -32,13 +32,26 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 //Sign up new users
-export const SignUpWithEmailAndPassword = async ({ email, password }) => {
+export const firebaseSignUpWithEmailAndPassword = async ({ email, password }) => {
     if (!email || !password) {
-        console.log('empty email/password');
+        alert('empty email/password');
         return;
     }
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-    return userCredential.user;
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+        return userCredential.user;
+    } catch (error) {
+        switch (error.code) {
+            case 'auth/weak-password':
+                alert('Password length must be at least 6 characters long');
+                break;
+            case 'auth/email-already-in-use':
+                alert('Already signed up!');
+                break;
+            default:
+                alert(`code: ${error.code} message: ${error.message}`)
+        }
+    }
     // .then((userCredential) => {
     //     // Signed in 
     //     const user = userCredential.user;
@@ -53,10 +66,10 @@ export const SignUpWithEmailAndPassword = async ({ email, password }) => {
     // });
 }
 
-export const SignInWithEmailAndPassword = async ({ email, password }) => {
+export const firebaseSignInWithEmailAndPassword = async ({ email, password }) => {
     // console.log({ email, password })
     if (!email || !password) {
-        console.log('empty email/password');
+        alert('empty email/password');
         return;
     }
     try {

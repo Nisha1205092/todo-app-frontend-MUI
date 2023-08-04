@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { SignInWithEmailAndPassword } from "../../utils/firebase";
+import { firebaseSignInWithEmailAndPassword } from "../../utils/firebase";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/authState.recoil";
 import { saveUser } from "../../utils/utils";
@@ -51,20 +51,35 @@ const Signin = () => {
         //     email: data.get("email"),
         //     password: data.get("password")
         // });
-        const user = await SignInWithEmailAndPassword({ email, password })
-        // console.log({ email: user.email, uid: user.uid })
-        saveUser(user, setAuthUser);
-        // send data to backend
-        fetch(`${import.meta.env.VITE_SERVER_URL}${USER_SIGNIN}`, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                'email': email
+        try {
+            const user = await firebaseSignInWithEmailAndPassword({ email, password })
+            // console.log({ email: user.email, uid: user.uid })
+            if (user) {
+                const auth = {
+                    email: user.email,
+                    uid: user.uid
+                }
+                // save state locally as a recoil state
+                setAuthUser(auth)
+                const authString = JSON.stringify(auth)
+                localStorage.setItem('user', authString)
+                // send data to backend
+                fetch(`${import.meta.env.VITE_SERVER_URL}${USER_SIGNIN}`, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'email': email
+                    }
+                })
+                    .then(() => navigate('/'))
+                    .catch(err => console.log('error in sing-in', err))
+                // console.log(authUser)
+                resetFormFields()
             }
-        })
-            .then(() => navigate('/'))
-        // console.log(authUser)
-        resetFormFields()
+        } catch (error) {
+            alert(`code: ${error.code} message: ${error.message}`)
+            navigate('/signin')
+        }
     };
 
     return (

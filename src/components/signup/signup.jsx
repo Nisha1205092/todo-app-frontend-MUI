@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { SignUpWithEmailAndPassword } from "../../utils/firebase";
+import { firebaseSignUpWithEmailAndPassword } from "../../utils/firebase";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/authState.recoil";
 import { saveUser } from "../../utils/utils";
@@ -54,7 +54,7 @@ const Signup = () => {
             alert('passwords do not match')
             return;
         }
-        const user = await SignUpWithEmailAndPassword({ email, password })
+        const user = await firebaseSignUpWithEmailAndPassword({ email, password })
         console.log(`after firebase returns: ${user.email}, ${user.uid}`)
 
         // send data to backend
