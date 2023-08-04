@@ -12,6 +12,8 @@ import Auth from './pages/authentication/auth';
 import NavBar from './components/navbar/navbar';
 import Signup from './components/signup/signup';
 import Signin from './components/signin/signin';
+import ImportantList from './components/important-list/important-list';
+import PersonalList from './components/personal-list/personal-list';
 
 const App = () => {
   const [theme, setTheme] = useRecoilState(themeState);
@@ -47,6 +49,8 @@ const App = () => {
             <Route index element={<Home />} />
             <Route path='signup' element={<Signup />} />
             <Route path='signin' element={<Signin />} />
+            <Route path='important' element={<ImportantList />} />
+            <Route path='personal' element={<PersonalList />} />
           </Route>
         </Routes>
         <Copyright />

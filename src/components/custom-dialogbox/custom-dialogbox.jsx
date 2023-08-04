@@ -4,6 +4,15 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import SelectTagBox from '../select-tag-box/select-tag-box';
+import MyDateTimePicker from '../date-time-picker/date-time-picker';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import { IconButton } from '@mui/material';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import React from 'react'
+import { MuiFileInput } from 'mui-file-input'; //https://viclafouch.github.io/mui-file-input/docs/api-reference/
+import Divider from '@mui/material/Divider';
 
 const MyDialogBox = ({
     dialogTitle,
@@ -18,6 +27,12 @@ const MyDialogBox = ({
     open,
     handleClose
 }) => {
+    // image upload
+    const [file, setFile] = React.useState(null)
+    // image upload
+    const handleChange = (newFile) => {
+        setFile(newFile)
+    }
 
     return (
         <Dialog
@@ -107,6 +122,45 @@ const MyDialogBox = ({
                         console.log(description)
                     }}
                 />
+                <br />
+                {/* for selecting tags */}
+                <br />
+                <SelectTagBox />
+                {/* for selecting deadline */}
+                <br />
+                <MyDateTimePicker />
+                {/* for image upload */}
+                <br />
+                {/* <IconButton>
+                    <CameraAltIcon />
+                    <InputLabel htmlFor="image">Upload Image</InputLabel>
+                    <input hidden id='image' accept="image/*" type='file' />
+                </IconButton> */}
+                <MuiFileInput
+                    id='image'
+                    label='Upload multiple images (Optional)'
+                    sx={{
+                        "& .MuiInputBase-root": {
+                            color: 'white'
+                        },
+                        "& .MuiInputLabel-root": { color: 'white' },//styles the label
+                        "& .MuiOutlinedInput-root": {
+                            "& > fieldset": { borderColor: "white" },
+                        },
+                        "& .MuiOutlinedInput-root.Mui-focused": {
+                            "& > fieldset": {
+                                borderColor: "white"
+                            }
+                        },
+                        "& .MuiFormLabel-root.Mui-focused": {
+                            color: 'white'
+                        },
+                    }}
+                    multiple
+                    value={file}
+                    onChange={handleChange}
+                />
+
             </DialogContent>
             <DialogActions >
                 <Button

@@ -42,17 +42,7 @@ const UpdateDialog = ({ todoId, open, setOpen, handleClose, oldTitle, oldDescrip
                     });
 
                     setTodoList(newList);
-                    // editItem(
-                    //     todoList[index],
-                    //     data.title,
-                    //     data.description,
-                    //     index
-                    // )
-                    // newTodosArray[index].title = data.title;
-                    // newTodosArray[index].description = data.description;
-                    // setTodoList(newTodosArray)
                 }
-                // console.log('title and description updated')
             })
             .catch((err) => {
                 console.log({ err });
