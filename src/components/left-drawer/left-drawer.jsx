@@ -18,7 +18,6 @@ import GradeIcon from '@mui/icons-material/Grade';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import { useNavigate } from 'react-router-dom';
-import { useCallback } from 'react';
 
 const LeftDrawer = ({ userEmail }) => {
     const navigate = useNavigate();

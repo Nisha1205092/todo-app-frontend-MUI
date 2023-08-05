@@ -38,7 +38,7 @@ const Signin = () => {
     const handleChange = useCallback((e) => {
         const { name, value } = e.target;
         setFormFields({ ...formFields, [name]: value })
-    }, [e, formFields])
+    }, [formFields])
 
     const resetFormFields = useCallback(() => {
         setFormFields(defaultFormFields)
