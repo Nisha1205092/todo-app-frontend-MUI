@@ -5,6 +5,7 @@ import { todoListState } from "../../state/todos.recoil";
 import { TODO_ROUTE } from "../../routes/routes";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../state/authState.recoil";
+import axios from "axios";
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -28,23 +29,39 @@ const MyCheckbox = ({ status, todoId }) => {
             };
 
             // update in DB
-            fetch(`${import.meta.env.VITE_SERVER_URL}${TODO_ROUTE}/${todoId}`, {
-                method: 'PUT',
-                body: JSON.stringify({ completed: e.target.checked }),
+            axios.put(`${import.meta.env.VITE_SERVER_URL}${TODO_ROUTE}/${todoId}`,
+                {
+                    completed: e.target.checked
+                }, {
                 headers: {
-                    'Content-Type': 'application/json',
                     'email': email
                 }
             })
-                .then((res) => res.json())
-                .then(data => {
-                    // console.log(data);
+                .then(res => {
+                    // console.log(res.data);
                     console.log('before setTodoList')
                     setTodoList(updatedTodos); // Update the todosArray state
                 })
                 .catch((err) => {
-                    console.log({ err });
-                    alert('Something went wrong! Please refresh!')
+                    // console.log({ err })
+                    // alert('Something went wrong!')
+                    if (err.response) {
+                        // Request made and server responded
+                        const { status, config } = err.response;
+
+                        if (status === 404) {
+                            alert(`${config.url} not found`);
+                        }
+                        if (status === 500) {
+                            alert("Server error");
+                        }
+                    } else if (err.request) {
+                        // Request made but no response from server
+                        alert("Error", err.message);
+                    } else {
+                        // some other errors
+                        alert("Error", err.message);
+                    }
                 })
         }
     }, [index])

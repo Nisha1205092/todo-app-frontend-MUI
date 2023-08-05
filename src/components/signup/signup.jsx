@@ -12,6 +12,7 @@ import { userState } from "../../state/authState.recoil";
 import { saveUser } from "../../utils/utils";
 import { USER_SIGNUP } from "../../routes/routes";
 import { useCallback } from "react";
+import axios from "axios";
 
 const defaultFormFields = {
     email: '',
@@ -59,18 +60,12 @@ const Signup = () => {
         console.log(`after firebase returns: ${user.email}, ${user.uid}`)
 
         // send data to backend
-        fetch(`${import.meta.env.VITE_SERVER_URL}${USER_SIGNUP}`, {
-            method: 'POST',
-            body: JSON.stringify({
+        axios.post(`${import.meta.env.VITE_SERVER_URL}${USER_SIGNUP}`,
+            {
                 email: user.email,
                 uid: user.uid
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-            .then((res) => res.json())
-            .then(data => {
+            })
+            .then(res => {
                 const auth = {
                     email: user.email,
                     uid: user.uid
@@ -78,9 +73,29 @@ const Signup = () => {
                 navigate('/')
                 // save state locally as a recoil state
                 setAuthUser(auth)
-                console.log(data)
+                console.log(res.data)
             })
-            .catch(err => console.log('error in signup', err))
+            .catch((err) => {
+                // console.log({ err })
+                // alert('Something went wrong!')
+                if (err.response) {
+                    // Request made and server responded
+                    const { status, config } = err.response;
+
+                    if (status === 404) {
+                        alert(`${config.url} not found`);
+                    }
+                    if (status === 500) {
+                        alert("Server error");
+                    }
+                } else if (err.request) {
+                    // Request made but no response from server
+                    alert("Error", err.message);
+                } else {
+                    // some other errors
+                    alert("Error", err.message);
+                }
+            })
         // console.log({ email: user.email, uid: user.uid })
         // saveUser(user, setAuthUser);
         // if (user) {

@@ -16,6 +16,7 @@ import { todoListState } from '../../state/todos.recoil';
 import { useConfirm } from "material-ui-confirm";
 import { TODO_ROUTE } from '../../routes/routes';
 import { userState } from '../../state/authState.recoil';
+import axios from 'axios';
 
 const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
     const confirm = useConfirm();
@@ -38,10 +39,8 @@ const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
     }, [])
 
     const removeTodoItem = useCallback(() => {
-        fetch(`${import.meta.env.VITE_SERVER_URL}${TODO_ROUTE}/${todoId}`, {
-            method: 'DELETE',
+        axios.delete(`${import.meta.env.VITE_SERVER_URL}${TODO_ROUTE}/${todoId}`, {
             headers: {
-                "Content-Type": "application/json",
                 'email': email
             }
         })
@@ -52,8 +51,25 @@ const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
                 setTodoList(newTodosArray)
             })
             .catch((err) => {
-                console.log({ err });
-                alert('Something went wrorng!')
+                // console.log({ err })
+                // alert('Something went wrong!')
+                if (err.response) {
+                    // Request made and server responded
+                    const { status, config } = err.response;
+
+                    if (status === 404) {
+                        alert(`${config.url} not found`);
+                    }
+                    if (status === 500) {
+                        alert("Server error");
+                    }
+                } else if (err.request) {
+                    // Request made but no response from server
+                    alert("Error", err.message);
+                } else {
+                    // some other errors
+                    alert("Error", err.message);
+                }
             })
     }, [todoId, todoList])
 

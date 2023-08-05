@@ -6,6 +6,7 @@ import MyDialogBox from '../custom-dialogbox/custom-dialogbox';
 import { TODO_ROUTE } from '../../routes/routes';
 import { userState } from '../../state/authState.recoil';
 import { useCallback } from 'react';
+import axios from 'axios';
 
 const UpdateDialog = ({ todoId, open, setOpen, handleClose, oldTitle, oldDescription }) => {
     const [title, setTitle] = useState(oldTitle);
@@ -20,17 +21,16 @@ const UpdateDialog = ({ todoId, open, setOpen, handleClose, oldTitle, oldDescrip
     const updateTodoItem = (todoId, title, description) => {
         console.log(`update todo of id: ${todoId}`)
         // save in DB
-        fetch(`${import.meta.env.VITE_SERVER_URL}${TODO_ROUTE}/${todoId}`, {
-            method: 'PUT',
-            body: JSON.stringify({ title, description }),
-            headers: {
-                'Content-Type': 'application/json',
-                'email': email
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
+        axios.put(`${import.meta.env.VITE_SERVER_URL}${TODO_ROUTE}/${todoId}`,
+            { title, description },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'email': email
+                }
+            })
+            .then(res => {
+                console.log(res.data);
                 // const newTodosArray = [...todoList];
                 const index = todoList.findIndex(item => item._id === todoId);
                 if (index !== -1) {
@@ -46,8 +46,25 @@ const UpdateDialog = ({ todoId, open, setOpen, handleClose, oldTitle, oldDescrip
                 }
             })
             .catch((err) => {
-                console.log({ err });
-                alert('Something went wrong! Please refresh!')
+                // console.log({ err })
+                // alert('Something went wrong!')
+                if (err.response) {
+                    // Request made and server responded
+                    const { status, config } = err.response;
+
+                    if (status === 404) {
+                        alert(`${config.url} not found`);
+                    }
+                    if (status === 500) {
+                        alert("Server error");
+                    }
+                } else if (err.request) {
+                    // Request made but no response from server
+                    alert("Error", err.message);
+                } else {
+                    // some other errors
+                    alert("Error", err.message);
+                }
             })
     }
 

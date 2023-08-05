@@ -12,9 +12,9 @@ import { useState, useEffect } from "react";
 import { firebaseSignInWithEmailAndPassword } from "../../utils/firebase";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/authState.recoil";
-import { saveUser } from "../../utils/utils";
 import { USER_SIGNIN } from "../../routes/routes";
 import { useCallback } from "react";
+import axios from "axios";
 
 const defaultFormFields = {
     email: '',
@@ -65,15 +65,33 @@ const Signin = () => {
                 const authString = JSON.stringify(auth)
                 localStorage.setItem('user', authString)
                 // send data to backend
-                fetch(`${import.meta.env.VITE_SERVER_URL}${USER_SIGNIN}`, {
-                    method: "POST",
+                axios.post(`${import.meta.env.VITE_SERVER_URL}${USER_SIGNIN}`, {
                     headers: {
-                        'Content-Type': 'application/json',
                         'email': email
                     }
                 })
                     .then(() => navigate('/'))
-                    .catch(err => console.log('error in sing-in', err))
+                    .catch((err) => {
+                        // console.log({ err })
+                        // alert('Something went wrong!')
+                        if (err.response) {
+                            // Request made and server responded
+                            const { status, config } = err.response;
+
+                            if (status === 404) {
+                                alert(`${config.url} not found`);
+                            }
+                            if (status === 500) {
+                                alert("Server error");
+                            }
+                        } else if (err.request) {
+                            // Request made but no response from server
+                            alert("Error", err.message);
+                        } else {
+                            // some other errors
+                            alert("Error", err.message);
+                        }
+                    })
                 // console.log(authUser)
                 resetFormFields()
             }
