@@ -1,5 +1,5 @@
 import Button from '@mui/material/Button';
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import TodoItem from '../todo-item/todo-item';
@@ -11,9 +11,10 @@ const CompletedList2 = () => {
     const [isOpen, setIsOpen] = useState(false);
     const filteredLists = useRecoilValue(filteredTodoListState)
 
-    const handleClick = () => {
+    const handleClick = useCallback(() => {
         setIsOpen(!isOpen)
-    }
+    }, [isOpen])
+
     return (
         <>
             <div style={{

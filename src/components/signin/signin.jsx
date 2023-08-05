@@ -14,6 +14,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../../state/authState.recoil";
 import { saveUser } from "../../utils/utils";
 import { USER_SIGNIN } from "../../routes/routes";
+import { useCallback } from "react";
 
 const defaultFormFields = {
     email: '',
@@ -34,16 +35,16 @@ const Signin = () => {
         }
     }, [authUser]);
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
+    const handleChange = useCallback((e) => {
+        const { name, value } = e.target;
         setFormFields({ ...formFields, [name]: value })
-    }
+    }, [e, formFields])
 
-    const resetFormFields = () => {
+    const resetFormFields = useCallback(() => {
         setFormFields(defaultFormFields)
-    }
+    }, [])
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = useCallback(async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
@@ -80,7 +81,7 @@ const Signin = () => {
             alert(`code: ${error.code} message: ${error.message}`)
             navigate('/signin')
         }
-    };
+    }, [formFields]);
 
     return (
         <Container component="main" maxWidth="sm">

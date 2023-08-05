@@ -10,7 +10,7 @@ import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
 import { IconButton } from '@mui/material';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import React from 'react'
+import React, { useCallback } from 'react'
 import { MuiFileInput } from 'mui-file-input'; //https://viclafouch.github.io/mui-file-input/docs/api-reference/
 import Divider from '@mui/material/Divider';
 
@@ -30,9 +30,17 @@ const MyDialogBox = ({
     // image upload
     const [file, setFile] = React.useState(null)
     // image upload
-    const handleChange = (newFile) => {
+    const handleImageUpload = useCallback((newFile) => {
         setFile(newFile)
-    }
+    }, [])
+
+    const onTitleFieldChange = useCallback((e) => {
+        setTitle(e.target.value)
+    }, [])
+
+    const onDescriptionFieldChange = useCallback((e) => {
+        setDescription(e.target.value)
+    }, [])
 
     return (
         <Dialog
@@ -78,10 +86,7 @@ const MyDialogBox = ({
                     label="Title"
                     fullWidth
                     value={title}
-                    onChange={(e) => {
-                        setTitle(e.target.value)
-                        console.log(title)
-                    }}
+                    onChange={onTitleFieldChange}
                 />
                 <br />
                 <br />
@@ -117,10 +122,7 @@ const MyDialogBox = ({
                     fullWidth
                     variant="outlined"
                     value={description}
-                    onChange={(e) => {
-                        setDescription(e.target.value)
-                        console.log(description)
-                    }}
+                    onChange={onDescriptionFieldChange}
                 />
                 <br />
                 {/* for selecting tags */}
@@ -158,7 +160,7 @@ const MyDialogBox = ({
                     }}
                     multiple
                     value={file}
-                    onChange={handleChange}
+                    onChange={handleImageUpload}
                 />
 
             </DialogContent>

@@ -5,6 +5,7 @@ import { todoListState } from "../../state/todos.recoil";
 import MyDialogBox from '../custom-dialogbox/custom-dialogbox';
 import { TODO_ROUTE } from '../../routes/routes';
 import { userState } from '../../state/authState.recoil';
+import { useCallback } from 'react';
 
 const UpdateDialog = ({ todoId, open, setOpen, handleClose, oldTitle, oldDescription }) => {
     const [title, setTitle] = useState(oldTitle);
@@ -50,17 +51,17 @@ const UpdateDialog = ({ todoId, open, setOpen, handleClose, oldTitle, oldDescrip
             })
     }
 
-    const handleCancel = () => {
+    const handleCancel = useCallback(() => {
         setOpen(false);
         console.log('cancelled')
-    }
+    }, [])
 
-    const handleSave = () => {
+    const handleSave = useCallback(() => {
         setOpen(false);
         console.log('before updateTodoItem')
         updateTodoItem(todoId, title, description)
         console.log('after updateTodoItem')
-    }
+    }, [title, description])
 
     return (
         <MyDialogBox

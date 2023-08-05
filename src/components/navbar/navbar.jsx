@@ -15,6 +15,7 @@ import { signOutUser } from '../../utils/firebase';
 import { userState } from '../../state/authState.recoil';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LeftDrawer from '../left-drawer/left-drawer';
+import { useCallback } from 'react';
 
 const NavBar = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -47,12 +48,18 @@ const NavBar = () => {
         }
     }, [authUser])
 
-    const changeTheme = () => {
+    const changeTheme = useCallback(() => {
         const updatedTheme = isDarkTheme ? 'light' : 'dark';
         setTheme(updatedTheme);
         localStorage.setItem('theme', updatedTheme)
         console.log({ updatedTheme })
-    }
+    }, [isDarkTheme])
+
+    const logOutHandler = useCallback(() => {
+        signOutUser()
+        localStorage.setItem('user', null)
+        setAuthUser(null)
+    }, [])
 
     return (
         <>
@@ -96,11 +103,7 @@ const NavBar = () => {
                                             (
                                                 <Link to='/signin'>
                                                     <IconButton
-                                                        onClick={() => {
-                                                            signOutUser()
-                                                            localStorage.setItem('user', null)
-                                                            setAuthUser(null)
-                                                        }}
+                                                        onClick={logOutHandler}
                                                     >
                                                         <LogoutIcon />
                                                     </IconButton>

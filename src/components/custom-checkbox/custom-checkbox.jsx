@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import Checkbox from '@mui/material/Checkbox';
 import { useRecoilState } from "recoil";
 import { todoListState } from "../../state/todos.recoil";
@@ -15,7 +15,7 @@ const MyCheckbox = ({ status, todoId }) => {
     const updatedTodos = [...todoList]; // Create a copy of the todosArray
     const index = updatedTodos.findIndex(todo => todo._id === todoId); // Find the index of the todo item
 
-    const toggler = (e) => {
+    const toggler = useCallback((e) => {
         console.log(`inside toggler, todoId: ${todoId}`)
         setIsChecked(e.target.checked)
         // updateCheckbox(todoId, e.target.checked)
@@ -47,7 +47,7 @@ const MyCheckbox = ({ status, todoId }) => {
                     alert('Something went wrong! Please refresh!')
                 })
         }
-    }
+    }, [index])
 
     return (
         <Checkbox

@@ -1,6 +1,6 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import IconButton from '@mui/material/IconButton';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { todoListState } from '../../state/todos.recoil';
 import MyDialogBox from '../custom-dialogbox/custom-dialogbox';
@@ -18,7 +18,7 @@ const AddTodoDialog = () => {
     // for showing Snackbar when attempting empty item addition
     const [warning, setWarning] = useState(false);
 
-    const addTodoItem = ({ title, completed, description }) => {
+    const addTodoItem = useCallback(({ title, completed, description }) => {
         let todoId;
         if (title === '' && description === '') {
             setWarning(true);
@@ -48,30 +48,30 @@ const AddTodoDialog = () => {
                 console.log({ err })
                 alert('Something went wrong!')
             })
-    }
+    }, [title, description])
 
-    const handleClickOpen = () => {
+    const handleClickOpen = useCallback(() => {
         setOpen(true);
-    };
+    }, []);
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setOpen(false);
-    };
+    }, []);
 
-    const handleCancel = () => {
+    const handleCancel = useCallback(() => {
         setOpen(false);
         setTitle('')
         setDescription('')
         console.log('cancelled')
-    }
+    }, [])
 
-    const handleAdd = () => {
+    const handleAdd = useCallback(() => {
         setOpen(false);
         addTodoItem({ title, completed: false, description })
         setTitle('')
         setDescription('')
         console.log('added')
-    }
+    }, [title, description])
 
     return (
         <div>

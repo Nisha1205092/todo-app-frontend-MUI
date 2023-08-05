@@ -10,7 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import UpdateDialog from '../update-todo-item/update-todo-item';
 import Snackbar from '@mui/material/Snackbar';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { todoListState } from '../../state/todos.recoil';
 import { useConfirm } from "material-ui-confirm";
@@ -27,17 +27,17 @@ const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
         setOpen(true);
     };
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setOpen(false);
-    };
+    }, []);
 
-    const handleDelete = () => {
+    const handleDelete = useCallback(() => {
         confirm({ description: 'This will permanently delete the item' })
             .then(() => { removeTodoItem() })
             .catch(() => console.log('Deletion cancelled'))
-    }
+    }, [])
 
-    const removeTodoItem = () => {
+    const removeTodoItem = useCallback(() => {
         fetch(`${import.meta.env.VITE_SERVER_URL}${TODO_ROUTE}/${todoId}`, {
             method: 'DELETE',
             headers: {
@@ -55,7 +55,18 @@ const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
                 console.log({ err });
                 alert('Something went wrorng!')
             })
-    }
+    }, [todoId, todoList])
+
+    const editHandler = useCallback(() => {
+        console.log('edit');
+        handleClickOpen();
+    }, [])
+
+    const copyHandler = useCallback(() => {
+        setCopy(true);
+        navigator.clipboard.writeText(`${todoTitle} ${todoDescription}`)
+    }, [todoTitle, todoDescription])
+
     return (
         <Card
             sx={{
@@ -95,10 +106,7 @@ const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
                 <CardActions disableSpacing>
 
                     <IconButton
-                        onClick={() => {
-                            setCopy(true);
-                            navigator.clipboard.writeText(`${todoTitle} ${todoDescription}`)
-                        }}
+                        onClick={copyHandler}
                         aria-label='copy to clipboard'
                     >
                         <ContentPasteIcon />
@@ -111,10 +119,7 @@ const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                     />
                     <IconButton
-                        onClick={() => {
-                            console.log('edit');
-                            handleClickOpen();
-                        }}
+                        onClick={editHandler}
                         aria-label="edit todo item"
                     >
                         <EditIcon />
