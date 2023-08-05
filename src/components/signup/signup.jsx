@@ -37,7 +37,7 @@ const Signup = () => {
     const handleChange = useCallback((e) => {
         const { name, value } = e.target;
         setFormFields({ ...formFields, [name]: value })
-    }, [e, formFields])
+    }, [formFields])
 
     const resetFormFields = useCallback(() => {
         setFormFields(defaultFormFields)
@@ -87,7 +87,7 @@ const Signup = () => {
         // }
         // console.log(authUser)
         resetFormFields()
-    }, [e, formFields]);
+    }, [formFields]);
 
     return (
         <Container component="main" maxWidth="sm">
