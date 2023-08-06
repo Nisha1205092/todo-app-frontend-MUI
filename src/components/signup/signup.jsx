@@ -13,6 +13,8 @@ import { saveUser } from "../../utils/utils";
 import { USER_SIGNUP } from "../../routes/routes";
 import { useCallback } from "react";
 import axios from "axios";
+import useAuth from "../../customHooks/useAuth";
+import { useUserSignUp } from "../../utils/tanstack-query";
 
 const defaultFormFields = {
     email: '',
@@ -21,19 +23,19 @@ const defaultFormFields = {
 }
 
 const Signup = () => {
+    // using custom hook
+    const [user, login] = useAuth();
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { email, password, confirmPassword } = formFields;
-    const [authUser, setAuthUser] = useRecoilState(userState);
+    const { isError, isSuccess, mutate } = useUserSignUp(user)
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(authUser);
-        if (authUser) {
-            const authString = JSON.stringify(authUser)
-            localStorage.setItem('user', authString)
+        console.log(user);
+        if (user?.email?.length) {
             navigate('/')
         }
-    }, [authUser]);
+    }, [user]);
 
     const handleChange = useCallback((e) => {
         const { name, value } = e.target;
@@ -44,65 +46,77 @@ const Signup = () => {
         setFormFields(defaultFormFields)
     }, [])
 
-    const handleSubmit = useCallback(async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const data = new FormData(e.currentTarget);
-        // console.log({
-        //     email: data.get("email"),
-        //     password: data.get("password"),
-        //     confirmPassword: data.get("confirmPassword")
-        // });
+
         if (password !== confirmPassword) {
             alert('passwords do not match')
             return;
         }
-        const user = await firebaseSignUpWithEmailAndPassword({ email, password })
-        console.log(`after firebase returns: ${user.email}, ${user.uid}`)
 
-        // send data to backend
-        axios.post(`${import.meta.env.VITE_SERVER_URL}${USER_SIGNUP}`,
-            {
-                email: user.email,
-                uid: user.uid
-            })
-            .then(res => {
+        try {
+            const userFirebase = await firebaseSignUpWithEmailAndPassword({ email, password })
+            console.log(`after firebase returns: ${userFirebase.email}, ${userFirebase.uid}`)
+
+            if (userFirebase) {
                 const auth = {
-                    email: user.email,
-                    uid: user.uid
+                    email: userFirebase.email,
+                    uid: userFirebase.uid
                 }
-                navigate('/')
-                // save state locally as a recoil state
-                setAuthUser(auth)
-                console.log(res.data)
-            })
-            .catch((err) => {
-                // console.log({ err })
-                // alert('Something went wrong!')
-                if (err.response) {
-                    // Request made and server responded
-                    const { status, config } = err.response;
+                console.log(auth)
+                mutate(auth);
+                if (isError) {
+                    console.log('sigup faced some error')
+                }
+                if (isSuccess) {
+                    console.log('signup successful')
+                    login(auth)
+                }
+                // send data to backend
+                // axios.post(`${import.meta.env.VITE_SERVER_URL}${USER_SIGNUP}`,
+                //     {
+                //         email: userFirebase.email,
+                //         uid: userFirebase.uid
+                //     })
+                //     .then(res => {
+                //         const auth = {
+                //             email: userFirebase.email,
+                //             uid: userFirebase.uid
+                //         }
+                //         navigate('/')
+                //         // save state locally as a recoil state
+                //         // use custom hook to update the state and local storage
+                //         login(auth)
+                //         console.log(res.data)
+                //     })
+                //     .catch((err) => {
+                //         // console.log({ err })
+                //         // alert('Something went wrong!')
+                //         if (err.response) {
+                //             // Request made and server responded
+                //             const { status, config } = err.response;
 
-                    if (status === 404) {
-                        alert(`${config.url} not found`);
-                    }
-                    if (status === 500) {
-                        alert("Server error");
-                    }
-                } else if (err.request) {
-                    // Request made but no response from server
-                    alert("Error", err.message);
-                } else {
-                    // some other errors
-                    alert("Error", err.message);
-                }
-            })
-        // console.log({ email: user.email, uid: user.uid })
-        // saveUser(user, setAuthUser);
-        // if (user) {
-        // }
-        // console.log(authUser)
-        resetFormFields()
-    }, [formFields]);
+                //             if (status === 404) {
+                //                 alert(`${config.url} not found`);
+                //             }
+                //             if (status === 500) {
+                //                 alert("Server error");
+                //             }
+                //         } else if (err.request) {
+                //             // Request made but no response from server
+                //             alert("Error", err.message);
+                //         } else {
+                //             // some other errors
+                //             alert("Error", err.message);
+                //         }
+                //     })
+                resetFormFields()
+            }
+        } catch (error) {
+            alert(`code: ${error.code} message: ${error.message}`)
+            navigate('/signup')
+        }
+    };
 
     return (
         <Container component="main" maxWidth="sm">

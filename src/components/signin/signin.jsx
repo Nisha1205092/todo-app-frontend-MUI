@@ -15,6 +15,10 @@ import { userState } from "../../state/authState.recoil";
 import { USER_SIGNIN } from "../../routes/routes";
 import { useCallback } from "react";
 import axios from "axios";
+import useAuth from "../../customHooks/useAuth";
+import { useUserSignIn } from "../../utils/tanstack-query";
+import { useMutation } from "@tanstack/react-query";
+import { signInUser } from "../../utils/utils";
 
 const defaultFormFields = {
     email: '',
@@ -22,18 +26,23 @@ const defaultFormFields = {
 }
 
 const Signin = () => {
+    // using custom hook
+    const [user, login] = useAuth();
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { email, password } = formFields;
     // console.log({ email, password })
-    const [authUser, setAuthUser] = useRecoilState(userState);
+    // const [authUser, setAuthUser] = useRecoilState(userState);
+    const { isError, isSuccess, mutate } = useMutation({
+        mutationFn: (email) => signInUser(email)
+    })
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(authUser);
-        if (authUser) {
+        console.log(user);
+        if (isSuccess) {
             navigate('/') //if user is already signed in, then it automatically takes to the home page
         }
-    }, [authUser]);
+    }, [user]);
 
     const handleChange = useCallback((e) => {
         const { name, value } = e.target;
@@ -44,54 +53,55 @@ const Signin = () => {
         setFormFields(defaultFormFields)
     }, [])
 
-    const handleSubmit = useCallback(async (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-
-        // console.log({
-        //     email: data.get("email"),
-        //     password: data.get("password")
-        // });
         try {
-            const user = await firebaseSignInWithEmailAndPassword({ email, password })
-            // console.log({ email: user.email, uid: user.uid })
-            if (user) {
-                const auth = {
-                    email: user.email,
-                    uid: user.uid
-                }
-                // save state locally as a recoil state
-                setAuthUser(auth)
-                const authString = JSON.stringify(auth)
-                localStorage.setItem('user', authString)
-                // send data to backend
-                axios.post(`${import.meta.env.VITE_SERVER_URL}${USER_SIGNIN}`, {
-                    headers: {
-                        'email': email
-                    }
-                })
-                    .then(() => navigate('/'))
-                    .catch((err) => {
-                        // console.log({ err })
-                        // alert('Something went wrong!')
-                        if (err.response) {
-                            // Request made and server responded
-                            const { status, config } = err.response;
+            const userFirebase = await firebaseSignInWithEmailAndPassword({ email, password })
 
-                            if (status === 404) {
-                                alert(`${config.url} not found`);
-                            }
-                            if (status === 500) {
-                                alert("Server error");
-                            }
-                        } else if (err.request) {
-                            // Request made but no response from server
-                            alert("Error", err.message);
-                        } else {
-                            // some other errors
-                            alert("Error", err.message);
-                        }
-                    })
+            if (userFirebase) {
+                const auth = {
+                    email: userFirebase.email,
+                    uid: userFirebase.uid
+                }
+
+                console.log(auth);
+                mutate(auth.email)
+                if (isError) {
+                    console.log('sigin faced some error')
+                }
+                if (isSuccess) {
+                    // save {email, uid} in localStorage and custom hook
+                    login(auth)
+                    console.log('signin successful')
+                }
+                // send data to backend
+                // axios.post(`${import.meta.env.VITE_SERVER_URL}${USER_SIGNIN}`, {
+                //     headers: {
+                //         'email': userFirebase.email
+                //     }
+                // })
+                //     .then(() => navigate('/'))
+                //     .catch((err) => {
+                //         // console.log({ err })
+                //         // alert('Something went wrong!')
+                //         if (err.response) {
+                //             // Request made and server responded
+                //             const { status, config } = err.response;
+
+                //             if (status === 404) {
+                //                 alert(`${config.url} not found`);
+                //             }
+                //             if (status === 500) {
+                //                 alert("Server error");
+                //             }
+                //         } else if (err.request) {
+                //             // Request made but no response from server
+                //             alert("Error", err.message);
+                //         } else {
+                //             // some other errors
+                //             alert("Error", err.message);
+                //         }
+                //     })
                 // console.log(authUser)
                 resetFormFields()
             }
@@ -99,7 +109,7 @@ const Signin = () => {
             alert(`code: ${error.code} message: ${error.message}`)
             navigate('/signin')
         }
-    }, [formFields]);
+    };
 
     return (
         <Container component="main" maxWidth="sm">

@@ -9,19 +9,20 @@ import { useRecoilState } from 'recoil';
 import { userState } from '../../state/authState.recoil';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import useAuth from '../../customHooks/useAuth';
 
 const Home = () => {
-    const [authUser, setAuthUser] = useRecoilState(userState);
+    const [user] = useAuth()
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(authUser);
-        if (authUser) {
+        console.log(user);
+        if (user.email.length) {
             navigate('/') //if user is already signed in, then it automatically takes to the home page
         } else {
             navigate('/signin')
         }
-    }, [authUser]);
+    }, [user]);
 
     return (
         <ConfirmProvider>

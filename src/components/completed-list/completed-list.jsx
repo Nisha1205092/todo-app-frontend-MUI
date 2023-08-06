@@ -1,3 +1,4 @@
+import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import { useCallback, useState } from "react"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -5,15 +6,39 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import TodoItem from '../todo-item/todo-item';
 import { useRecoilValue } from 'recoil';
 import { filteredTodoListState } from '../../state/todos.recoil';
-import { randomKeyGenerator } from '../../utils/utils';
+import { getCompletedTodos, randomKeyGenerator } from '../../utils/utils';
+import { useQuery } from '@tanstack/react-query';
+import { useCompletedTodos } from '../../utils/tanstack-query';
+import useAuth from '../../customHooks/useAuth';
 
 const CompletedList2 = () => {
+    const [user] = useAuth();
     const [isOpen, setIsOpen] = useState(false);
-    const filteredLists = useRecoilValue(filteredTodoListState)
+    // const filteredLists = useRecoilValue(filteredTodoListState)
+    // const { email } = localStorage.getItem('user');
+
+    const { status, error, data } = useCompletedTodos(user?.email);
+    // status can be ['success', 'error', 'loading']
 
     const handleClick = useCallback(() => {
         setIsOpen(!isOpen)
     }, [isOpen])
+
+    if (status === 'loading') {
+        return (
+            <div
+                style={{
+                    color: 'white',
+                    textAlign: 'center'
+                }}>
+                <CircularProgress color="secondary" />
+            </div>
+        )
+    }
+
+    if (status === 'error') {
+        return <h1>{JSON.stringify(error)}</h1>
+    }
 
     return (
         <>
@@ -38,7 +63,7 @@ const CompletedList2 = () => {
                         onClick={handleClick}
                         disableRipple
                     >
-                        {`Completed List (${filteredLists.completedCount})`}
+                        {`Completed List (${data.length})`}
                     </Button>
                 </div>
                 {
@@ -49,14 +74,14 @@ const CompletedList2 = () => {
                         }}
                     >
                         {
-                            filteredLists.todoListCompleted.length === 0
+                            data.length === 0
                                 ? <div style={{
                                     color: 'white',
                                     textAlign: 'center'
                                 }}>
                                     No completed task at this moment!!
                                 </div>
-                                : filteredLists.todoListCompleted.map(item => (
+                                : data.map(item => (
                                     <TodoItem
                                         key={randomKeyGenerator()}
                                         todoId={item._id}

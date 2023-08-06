@@ -17,13 +17,16 @@ import { useConfirm } from "material-ui-confirm";
 import { TODO_ROUTE } from '../../routes/routes';
 import { userState } from '../../state/authState.recoil';
 import axios from 'axios';
+import { useDeleteTodo } from '../../utils/tanstack-query';
+import useAuth from '../../customHooks/useAuth';
 
 const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
+    const [user] = useAuth();
     const confirm = useConfirm();
     const [open, setOpen] = useState(false);
     const [copy, setCopy] = useState(false);
-    const [todoList, setTodoList] = useRecoilState(todoListState)
-    const { email } = useRecoilValue(userState)
+    // const [todoList, setTodoList] = useRecoilState(todoListState)
+    // const { email } = useRecoilValue(userState)
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -38,40 +41,49 @@ const TodoItem = ({ todoId, todoTitle, todoDescription, todoCompleted }) => {
             .catch(() => console.log('Deletion cancelled'))
     }, [])
 
-    const removeTodoItem = useCallback(() => {
-        axios.delete(`${import.meta.env.VITE_SERVER_URL}${TODO_ROUTE}/${todoId}`, {
-            headers: {
-                'email': email
-            }
-        })
-            .then(() => {
-                // console.log('delete successful')
-                //no need to fetch from server
-                const newTodosArray = todoList.filter(todo => todo._id !== todoId)
-                setTodoList(newTodosArray)
-            })
-            .catch((err) => {
-                // console.log({ err })
-                // alert('Something went wrong!')
-                if (err.response) {
-                    // Request made and server responded
-                    const { status, config } = err.response;
+    const removeTodoItem = () => {
+        const mutation = useDeleteTodo(user, todoId);
+        if (mutation.isError) {
+            console.log('todo deletion faced some error')
+        }
+        if (mutation.isSuccess) {
+            console.log('todo deleted successfully')
+        }
+    }
+    // const removeTodoItem = useCallback(() => {
+    //     axios.delete(`${import.meta.env.VITE_SERVER_URL}${TODO_ROUTE}/${todoId}`, {
+    //         headers: {
+    //             'email': email
+    //         }
+    //     })
+    //         .then(() => {
+    //             // console.log('delete successful')
+    //             //no need to fetch from server
+    //             const newTodosArray = todoList.filter(todo => todo._id !== todoId)
+    //             setTodoList(newTodosArray)
+    //         })
+    //         .catch((err) => {
+    //             // console.log({ err })
+    //             // alert('Something went wrong!')
+    //             if (err.response) {
+    //                 // Request made and server responded
+    //                 const { status, config } = err.response;
 
-                    if (status === 404) {
-                        alert(`${config.url} not found`);
-                    }
-                    if (status === 500) {
-                        alert("Server error");
-                    }
-                } else if (err.request) {
-                    // Request made but no response from server
-                    alert("Error", err.message);
-                } else {
-                    // some other errors
-                    alert("Error", err.message);
-                }
-            })
-    }, [todoId, todoList])
+    //                 if (status === 404) {
+    //                     alert(`${config.url} not found`);
+    //                 }
+    //                 if (status === 500) {
+    //                     alert("Server error");
+    //                 }
+    //             } else if (err.request) {
+    //                 // Request made but no response from server
+    //                 alert("Error", err.message);
+    //             } else {
+    //                 // some other errors
+    //                 alert("Error", err.message);
+    //             }
+    //         })
+    // }, [todoId, todoList])
 
     const editHandler = useCallback(() => {
         console.log('edit');
