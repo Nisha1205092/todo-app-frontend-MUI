@@ -24,17 +24,21 @@ export const randomKeyGenerator = () => {
 
 export const fetchAllTodos = async (email) => {
     // console.log(import.meta.env.VITE_SERVER_URL)
-    const data = await fetch(`${import.meta.env.VITE_SERVER_URL}${TODO_ROUTE}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'email': email
-        }
-    })
-    const response = await data.json()
-    const array = await response.todos;
-    console.log({ todolist: array })
-    return array; // can be []
+    try {
+        const data = await fetch(`${import.meta.env.VITE_SERVER_URL}${TODO_ROUTE}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'email': email
+            }
+        })
+        const response = await data.json()
+        const array = await response;
+        console.log({ todolist: array })
+        return array; // can be []
+    } catch (error) {
+        alert(`something went wrong: ${error}`)
+    }
 }
 
 /** 
