@@ -14,6 +14,7 @@ import Signup from './components/signup/signup';
 import Signin from './components/signin/signin';
 import ImportantList from './components/important-list/important-list';
 import PersonalList from './components/personal-list/personal-list';
+import WorkList from './components/work-list/work-list';
 
 const App = () => {
   const [theme, setTheme] = useRecoilState(themeState);
@@ -51,6 +52,7 @@ const App = () => {
             <Route path='signin' element={<Signin />} />
             <Route path='important' element={<ImportantList />} />
             <Route path='personal' element={<PersonalList />} />
+            <Route path='work' element={<WorkList />} />
           </Route>
         </Routes>
         <Copyright />

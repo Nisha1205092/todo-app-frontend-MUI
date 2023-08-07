@@ -18,6 +18,7 @@ import GradeIcon from '@mui/icons-material/Grade';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import { useNavigate } from 'react-router-dom';
+import WorkIcon from '@mui/icons-material/Work';
 
 const LeftDrawer = ({ userEmail }) => {
     const navigate = useNavigate();
@@ -85,6 +86,14 @@ const LeftDrawer = ({ userEmail }) => {
                         <ListItemText primary={'Personal'} />
                     </ListItemButton>
                 </ListItem>
+                <ListItem key='work' disablePadding>
+                    <ListItemButton onClick={() => navigate('/work')}>
+                        <ListItemIcon>
+                            <WorkIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Work'} />
+                    </ListItemButton>
+                </ListItem>
                 <ListItem key='create-list' disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
@@ -93,20 +102,6 @@ const LeftDrawer = ({ userEmail }) => {
                         <ListItemText primary={'Create List'} />
                     </ListItemButton>
                 </ListItem>
-            </List>
-
-            {/* Create new tag */}
-            <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
             </List>
         </Box>
     );

@@ -1,14 +1,31 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
-const SelectTagBox = () => {
+const SelectTagBox = ({ setTags }) => {
+    const [value, setValue] = useState(tags[1]);
+    const [inputValue, setInputValue] = useState('');
+
+    useEffect(() => {
+        console.log(`you selected tag: ${inputValue}`)
+        setTags([inputValue.toLowerCase()])
+    }, [inputValue])
     return (
         <Autocomplete
             fullWidth
             disablePortal
             id="combo-box-demo"
             options={tags}
+            value={value}
+            inputValue={inputValue}
+            onInputChange={(event, newInput) => {
+                setInputValue(newInput)
+            }}
+            onChange={(event, newValue) => {
+                setValue(newValue)
+            }}
             sx={{
                 "& .MuiInputBase-root": {
                     color: 'white'
@@ -26,15 +43,24 @@ const SelectTagBox = () => {
                     color: 'white'
                 },
             }}
-            renderInput={(params) => <TextField {...params} label="tags" />}
+            renderInput={(params) => <TextField {...params} label="Choose a tag" />}
+
         />
     );
 }
 
+
 // todo tags
 const tags = [
-    { label: 'Important' },
-    { label: 'Personal' }
+    { label: 'Work' },
+    { label: 'Personal' },
+    { label: 'Important' }
 ];
+
+// const tags = [
+//     'Work',
+//     'Personal',
+//     'Important'
+// ]
 
 export default SelectTagBox;
