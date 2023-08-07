@@ -1,39 +1,43 @@
 # Material UI - Vite.js example
 
-## How to use
+## Run locally
 
-Download the example [or clone the repo](https://github.com/mui/material-ui):
+- Create a .env file and copy the following line 
+```VITE_SERVER_URL='http://localhost:3002'```
+- In Terminal, start the dev server 
+```npm run dev```
 
-<!-- #default-branch-switch -->
+## Features
 
-```bash
-curl https://codeload.github.com/mui/material-ui/tar.gz/master | tar -xz --strip=2 material-ui-master/examples/material-vite
-cd material-vite
-```
+- User can Sign-up, Sign-in
+- Select Light/Dark Theme
+- Create, Edit, Delete and View Todos
 
-Install it and run:
+## Wanted to Add
 
-```bash
-npm install
-npm run dev
-```
+- User can categorize todos by setting tags associated with each one
+- User can filter todos based on text or tags
+- Live link hosted on Vercel (due to the change of the backend project structure, it doesn't work now)
 
-or:
+## Highlights
 
-<!-- #default-branch-switch -->
+- Firebase for authentication
+- Mongodb for saving todos
+- Recoil for state management
+- MUI for good looking accessible UI
 
-[![Edit on StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/mui/material-ui/tree/master/examples/material-vite)
+## Tried but failed
 
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/mui/material-ui/tree/master/examples/material-vite)
+- Tried to switch from Recoil based state management to React-Query. Due to 
+the lack of proper code structuring, things became hard to migrate, 
+eventually left it unfinished. Though the code was almost ready, 
+needed to move some hooks out of the functions to the top of the functional 
+components, but axios kept throwing some error. Then I abandoned it. 
+- Switched from Fetch API to Axios for easier error throwing. It worked, until I 
+added Tanstack (AKA) React-Query
 
-## The idea behind the example
+## Lessons learned
 
-This example uses [Vite.js](https://github.com/vitejs/vite).
-It includes `@mui/material` and its peer dependencies, including [Emotion](https://emotion.sh/docs/introduction), the default style engine in Material UI v5.
+- Need to focus more on learning and writing
+modular, scalable and maintainable code 
 
-## What's next?
-
-<!-- #default-branch-switch -->
-
-You now have a working example project.
-You can head back to the documentation and continue by browsing the [templates](https://mui.com/material-ui/getting-started/templates/) section.
