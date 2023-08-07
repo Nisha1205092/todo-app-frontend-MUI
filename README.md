@@ -7,6 +7,8 @@
 - In Terminal, start the dev server 
 ```npm run dev```
 
+- Checkout the screenshots in the todo-ss.pdf file
+
 ## Features
 
 - User can Sign-up, Sign-in
