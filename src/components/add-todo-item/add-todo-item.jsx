@@ -12,14 +12,13 @@ const AddTodoDialog = () => {
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('')
-    const [tags, setTags] = useState([''])
     const [todoList, setTodoList] = useRecoilState(todoListState)
     const { email } = useRecoilValue(userState)
 
     // for showing Snackbar when attempting empty item addition
     const [warning, setWarning] = useState(false);
 
-    const addTodoItem = useCallback(({ title, completed, description, tags }) => {
+    const addTodoItem = useCallback(({ title, completed, description }) => {
         let todoId;
 
         if (title === '' && description === '') {
@@ -30,8 +29,7 @@ const AddTodoDialog = () => {
             method: "POST",
             body: JSON.stringify({
                 title,
-                description,
-                tags
+                description
             }),
             headers: {
                 "Content-Type": "application/json",
@@ -44,7 +42,7 @@ const AddTodoDialog = () => {
                 todoId = data.id
                 // no need to fetch from the server
                 const newTodosArray = [...todoList];
-                newTodosArray.push({ _id: todoId, title, completed, description, tags })
+                newTodosArray.push({ _id: todoId, title, completed, description })
                 setTodoList(newTodosArray)
             })
             .catch((err) => {
@@ -69,9 +67,8 @@ const AddTodoDialog = () => {
     }, [])
 
     const handleAdd = useCallback(() => {
-        console.log(`tags: ${tags[0]}`)
         setOpen(false);
-        addTodoItem({ title, completed: false, description, tags })
+        addTodoItem({ title, completed: false, description })
         setTitle('')
         setDescription('')
         console.log('added')
@@ -104,7 +101,6 @@ const AddTodoDialog = () => {
                 setTitle={setTitle}
                 description={description}
                 setDescription={setDescription}
-                setTags={setTags}
                 leftButtonText={'Cancel'}
                 leftButtonHandler={handleCancel}
                 rightButtonText={'Add'}

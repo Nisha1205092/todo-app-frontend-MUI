@@ -4,14 +4,9 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-const SelectTagBox = ({ setTags }) => {
+const SelectTagBox = () => {
     const [value, setValue] = useState(tags[1]);
-    const [inputValue, setInputValue] = useState('');
 
-    useEffect(() => {
-        console.log(`you selected tag: ${inputValue}`)
-        setTags([inputValue.toLowerCase()])
-    }, [inputValue])
     return (
         <Autocomplete
             fullWidth
@@ -19,10 +14,6 @@ const SelectTagBox = ({ setTags }) => {
             id="combo-box-demo"
             options={tags}
             value={value}
-            inputValue={inputValue}
-            onInputChange={(event, newInput) => {
-                setInputValue(newInput)
-            }}
             onChange={(event, newValue) => {
                 setValue(newValue)
             }}

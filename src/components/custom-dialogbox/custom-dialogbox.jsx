@@ -20,7 +20,6 @@ const MyDialogBox = ({
     setTitle,
     description,
     setDescription,
-    setTags,
     leftButtonText,
     rightButtonText,
     leftButtonHandler,
@@ -128,7 +127,7 @@ const MyDialogBox = ({
                 <br />
                 {/* for selecting tags */}
                 <br />
-                <SelectTagBox setTags={setTags} />
+                <SelectTagBox />
                 {/* for selecting deadline */}
                 <br />
                 <MyDateTimePicker />
