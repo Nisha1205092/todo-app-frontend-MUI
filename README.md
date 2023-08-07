@@ -10,8 +10,10 @@
 ## Features
 
 - User can Sign-up, Sign-in
-- Select Light/Dark Theme
-- Create, Edit, Delete and View Todos
+- Proper error messages during Sign-in and Sign-up are shown to the user
+- User will remain signed-in, as authentication status is saved in the browser's local storage
+- Select Light/Dark Theme, save theme setting locally, select theme setting based on user's settings
+- Create, Edit, Delete, Copy to Clipboard and View Todos
 
 ## Wanted to Add
 
