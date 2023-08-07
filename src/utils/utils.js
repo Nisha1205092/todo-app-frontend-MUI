@@ -33,7 +33,7 @@ export const fetchAllTodos = async (email) => {
             }
         })
         const response = await data.json()
-        const array = await response.todos;
+        const array = await response;
         console.log({ todolist: array })
         return array; // can be []
     } catch (error) {
