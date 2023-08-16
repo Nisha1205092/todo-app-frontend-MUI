@@ -157,6 +157,7 @@ const MyDialogBox = ({
                         "& .MuiFormLabel-root.Mui-focused": {
                             color: 'white'
                         },
+                        width: '100%'
                     }}
                     multiple
                     value={file}
