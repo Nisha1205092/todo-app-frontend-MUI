@@ -17,8 +17,9 @@
 
 ## Future Features
 
-- User can categorize todos by setting tags associated with each one
-- User can filter todos based on text or tags
+- categorize todos by setting tags associated with each one
+- add deadline and upload images
+- filter todos based on text or tags
 
 ## Highlights
 
