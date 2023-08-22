@@ -36,3 +36,9 @@ https://github.com/Nisha1205092/Todo-backend-EC2
 - Migrated almost 90% to Tanstack-Query (React-Query) for state management, instead of Recoil 
 - Switched from Fetch API to Axios for easier error throwing. It worked, until I 
 added Tanstack (AKA) React-Query
+
+![one](./demo/1.jpeg)
+![two](./demo/2.jpeg)
+![three](./demo/3.jpeg)
+![four](./demo/4.jpeg)
+![five](./demo/5.jpeg)
